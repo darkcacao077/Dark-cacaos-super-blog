@@ -89,3 +89,130 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog Sitesi</title>
+    <meta charset="UTF-8" />
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+      }
+      #user-info {
+        margin-top: 20px;
+      }
+      img {
+        border-radius: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Blog Sitesine Hoş Geldin</h1>
+
+    <button id="login">Google ile Giriş Yap</button>
+    <button id="logout" style="display:none">Çıkış Yap</button>
+
+    <div id="user-info"></div>
+
+    <script type="module">
+      //  Buraya Firebase configini yaz:
+      const firebaseConfig = {
+  apiKey: "AIzaSyDQXWhcaAl49AkssBqx6pEdVU-FG-6Oa_U",
+  authDomain: "darkcacaossuperblog.firebaseapp.com",
+  projectId: "darkcacaossuperblog",
+  storageBucket: "darkcacaossuperblog.firebasestorage.app",
+  messagingSenderId: "71970724813",
+  appId: "1:71970724813:web:98c5e8da068d2d33430284",
+  measurementId: "G-J4VMB1QSTZ"
+      };
+
+      // Firebase başlat
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+
+      const loginBtn = document.getElementById("login");
+      const logoutBtn = document.getElementById("logout");
+      const userInfo = document.getElementById("user-info");
+
+      loginBtn.onclick = () => {
+        signInWithPopup(auth, provider)
+          .then(result => {
+            const user = result.user;
+            userInfo.innerHTML = `
+              <p>Merhaba, ${user.displayName}</p>
+              <img src="${user.photoURL}" width="80"/>
+            `;
+            loginBtn.style.display = "none";
+            logoutBtn.style.display = "inline";
+          })
+          .catch(error => {
+            console.error(error);
+            });
+      };
+
+      logoutBtn.onclick = () => {
+        signOut(auth).then(() => {
+          userInfo.innerHTML = "";
+          loginBtn.style.display = "inline";
+          logoutBtn.style.display = "none";
+        });
+      };
+
+      // Oturum değiştiğinde
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          userInfo.innerHTML = `
+            <p>Merhaba, ${user.displayName}</p>
+            <img src="${user.photoURL}" width="80"/>
+          `;
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "inline";
+        }
+      });
+    </script>
+  </body>
+</html>
+
+  <body>
+<button id="googleSignInBtn">Google ile Giriş Yap</button>
+  </body>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    // buraya kendi firebase config bilgilerini koy
+  };
+  apiKey: "AIzaSyDQXWhcaAl49AkssBqx6pEdVU-FG-6Oa_U",
+  authDomain: "darkcacaossuperblog.firebaseapp.com",
+  projectId: "darkcacaossuperblog",
+  storageBucket: "darkcacaossuperblog.firebasestorage.app",
+  messagingSenderId: "71970724813",
+  appId: "1:71970724813:web:98c5e8da068d2d33430284",
+  measurementId: "G-J4VMB1QSTZ"
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  };
+  
+  const signInBtn = document.getElementById("googleSignInBtn");
+
+  signInBtn.addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        alert("Hoş geldin, " + user.displayName);
+      })
+      .catch((error) => {
+        console.error("Giriş hatası:", error);
+      });
+  });
+</script>
+  
